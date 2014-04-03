@@ -1,0 +1,71 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.hejian.men'
+version = '1.0-SNAPSHOT'
+
+description = """erpweb"""
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+configurations.all {
+it.exclude group: 'commons-logging'
+it.exclude group: 'aspectj', module: 'aspectj*'
+it.exclude group: 'org.springframework', module: '2.*'
+it.exclude group: 'org.springframework', module: '3.0.*'
+}
+
+repositories {
+        
+     maven { url "http://localhost:8888/nexus/content/repositories/central" }
+}
+dependencies {
+    compile group: 'org.springside', name: 'springside-core', version:'4.1.0-SNAPSHOT'
+    compile group: 'org.aspectj', name: 'aspectjrt', version:'1.7.1'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version:'1.7.1'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version:'4.1.8.Final'
+    compile(group: 'org.springframework.data', name: 'spring-data-jpa', version:'1.3.0.RELEASE') {
+exclude(module: 'junit-dep')
+    }
+    compile group: 'org.springframework', name: 'spring-orm', version:'3.1.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-jdbc', version:'3.1.3.RELEASE'
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'3.1.3.RELEASE'
+    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
+    compile group: 'org.apache.shiro', name: 'shiro-spring', version:'1.2.1'
+    compile group: 'org.apache.shiro', name: 'shiro-ehcache', version:'1.2.1'
+    compile group: 'commons-codec', name: 'commons-codec', version:'1.7'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version:'4.3.0.Final'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.1.2'
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jaxb-annotations', version:'2.1.2'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.2'
+    compile group: 'log4j', name: 'log4j', version:'1.2.17'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.1'
+    compile group: 'com.google.guava', name: 'guava', version:'13.0.1'
+    runtime group: 'cglib', name: 'cglib', version:'2.2.2'
+    runtime group: 'asm', name: 'asm', version:'3.3.1'
+    runtime group: 'commons-dbcp', name: 'commons-dbcp', version:'1.4'
+    runtime group: 'com.h2database', name: 'h2', version:'1.3.170'
+    runtime group: 'opensymphony', name: 'sitemesh', version:'2.4.2'
+    runtime group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.2'
+    runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.7.2'
+    runtime group: 'org.slf4j', name: 'jul-to-slf4j', version:'1.7.2'
+    runtime group: 'org.lazyluke', name: 'log4jdbc-remix', version:'0.2.7'
+    testCompile group: 'org.springside', name: 'springside-test', version:'4.1.0-SNAPSHOT'
+    testCompile group: 'junit', name: 'junit', version:'4.11'
+    testCompile group: 'org.mockito', name: 'mockito-core', version:'1.9.5'
+    testCompile group: 'org.springframework', name: 'spring-test', version:'3.1.3.RELEASE'
+    testCompile(group: 'org.seleniumhq.selenium', name: 'selenium-java', version:'2.28.0') {
+exclude(module: 'selenium-android-driver')
+exclude(module: 'selenium-iphone-driver')
+exclude(module: 'commons-logging')
+    }
+    testCompile(group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version:'2.28.0') {
+exclude(module: 'cglib-nodep')
+exclude(module: 'commons-logging')
+    }
+    testCompile group: 'com.h2database', name: 'h2', version:'1.3.170'
+    testCompile group: 'org.eclipse.jetty.aggregate', name: 'jetty-webapp', version:'7.6.8.v20121106'
+    testCompile group: 'org.eclipse.jetty', name: 'jetty-jsp', version:'7.6.8.v20121106'
+    providedCompile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+}
