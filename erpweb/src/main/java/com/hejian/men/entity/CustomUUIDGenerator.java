@@ -23,6 +23,7 @@ public class CustomUUIDGenerator extends UUIDGenerator {
 
 	/* (non-Javadoc)
 	 * @see org.hibernate.id.UUIDGenerator#generate(org.hibernate.engine.SessionImplementor, java.lang.Object)
+	 * Hibernatge 3.6 UUID 默认为36位，其中包含-
 	 */
 	@Override
 	public Serializable generate(SessionImplementor session, Object object)
