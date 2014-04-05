@@ -1,8 +1,12 @@
 package com.hejian.men.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,12 +14,22 @@ import org.hibernate.validator.constraints.NotBlank;
 //JPA标识
 @Entity
 @Table(name = "ttask")
-public class Task extends IdEntity {
+public class Task {
 
 	private String title;
 	private String description;
 	private User user;
+	private Long id;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TASKSequence")
+	@SequenceGenerator(name = "TASKSequence", sequenceName = "SEQ_TASK", allocationSize=20)
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	// JSR303 BeanValidator的校验规则
 	@NotBlank
 	public String getTitle() {
