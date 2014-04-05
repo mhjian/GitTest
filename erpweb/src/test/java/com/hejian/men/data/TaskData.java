@@ -14,7 +14,7 @@ public class TaskData {
 	public static Task randomTask() {
 		Task task = new Task();
 		task.setTitle(randomTitle());
-		User user = new User(1L);
+		User user = new User("1");
 		task.setUser(user);
 		return task;
 	}

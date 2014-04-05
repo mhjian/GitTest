@@ -28,7 +28,7 @@ public class ProfileController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String updateForm(Model model) {
-		Long id = getCurrentUserId();
+		String id = getCurrentUserId();
 		model.addAttribute("user", accountService.getUser(id));
 		return "account/profile";
 	}
@@ -41,7 +41,7 @@ public class ProfileController {
 	}
 
 	@ModelAttribute("preloadUser")
-	public User getUser(@RequestParam(value = "id", required = false) Long id) {
+	public User getUser(@RequestParam(value = "id", required = false) String id) {
 		if (id != null) {
 			return accountService.getUser(id);
 		}
@@ -51,9 +51,9 @@ public class ProfileController {
 	/**
 	 * 取出Shiro中的当前用户Id.
 	 */
-	private Long getCurrentUserId() {
+	private String getCurrentUserId() {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id;
+		return user.id.toString();
 	}
 
 	/**

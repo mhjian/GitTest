@@ -1,6 +1,9 @@
 package com.hejian.men.service.account;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
@@ -10,14 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springside.modules.test.security.shiro.ShiroTestUtils;
+import org.springside.modules.utils.DateProvider.ConfigurableDateProvider;
+
 import com.hejian.men.data.UserData;
 import com.hejian.men.entity.User;
 import com.hejian.men.repository.TaskDao;
 import com.hejian.men.repository.UserDao;
-import com.hejian.men.service.ServiceException;
 import com.hejian.men.service.account.ShiroDbRealm.ShiroUser;
-import org.springside.modules.test.security.shiro.ShiroTestUtils;
-import org.springside.modules.utils.DateProvider.ConfigurableDateProvider;
 
 /**
  * AccountService的测试用例, 测试Service层的业务逻辑.
@@ -38,7 +41,7 @@ public class AccountServiceTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		ShiroTestUtils.mockSubject(new ShiroUser(3L, "foo", "Foo"));
+		ShiroTestUtils.mockSubject(new ShiroUser("3", "foo", "Foo"));
 	}
 
 	@Test
@@ -73,17 +76,17 @@ public class AccountServiceTest {
 	@Test
 	public void deleteUser() {
 		// 正常删除用户.
-		accountService.deleteUser(2L);
-		Mockito.verify(mockUserDao).delete(2L);
+		accountService.deleteUser("2");
+		Mockito.verify(mockUserDao).delete("2");
 
 		// 删除超级管理用户抛出异常, userDao没有被执行
 		try {
-			accountService.deleteUser(1L);
+			accountService.deleteUser("1");
 			fail("expected ServicExcepton not be thrown");
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			// expected exception
 		}
-		Mockito.verify(mockUserDao, Mockito.never()).delete(1L);
+		Mockito.verify(mockUserDao, Mockito.never()).delete("1");
 	}
 
 }

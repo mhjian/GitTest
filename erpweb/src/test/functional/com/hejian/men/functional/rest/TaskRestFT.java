@@ -78,7 +78,7 @@ public class TaskRestFT extends BaseFunctionalTestCase {
 
 		//update
 		String id = StringUtils.substringAfterLast(taskUri.toString(), "/");
-		task.setId(new Long(id));
+		task.setId(new String(id));
 		task.setTitle(TaskData.randomTitle());
 
 		restTemplate.put(taskUri, task);
@@ -113,7 +113,7 @@ public class TaskRestFT extends BaseFunctionalTestCase {
 		}
 
 		//update
-		titleBlankTask.setId(1L);
+		titleBlankTask.setId("1");
 		try {
 			restTemplate.put(resoureUrl + "/1", titleBlankTask);
 			fail("Update should fail while title is blank");

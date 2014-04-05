@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 
 @Entity
 @Table(name = "tuser")
-public class User  {
+public class User extends IdEntity {
 	private String loginName;
 	private String name;
 	private String plainPassword;
@@ -29,21 +29,11 @@ public class User  {
 	private String salt;
 	private String roles;
 	private Date registerDate;
-	protected Long id;
-	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
-	@SequenceGenerator(name = "UserSequence", sequenceName = "SEQ_USER", allocationSize=20)
-	public Long getId() {
-		return id;
-	}
 	
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public User() {
 	}
 
-	public User(Long id) {
+	public User(String id) {
 		this.id = id;
 	}
 

@@ -4,19 +4,20 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import com.hejian.men.entity.User;
-import com.hejian.men.repository.TaskDao;
-import com.hejian.men.repository.UserDao;
-import com.hejian.men.service.ServiceException;
-import com.hejian.men.service.account.ShiroDbRealm.ShiroUser;
 import org.springside.modules.security.utils.Digests;
 import org.springside.modules.utils.DateProvider;
 import org.springside.modules.utils.Encodes;
+
+import com.hejian.men.entity.User;
+import com.hejian.men.repository.TaskDao;
+import com.hejian.men.repository.UserDao;
+import com.hejian.men.service.account.ShiroDbRealm.ShiroUser;
 
 /**
  * 用户管理类.
@@ -42,7 +43,7 @@ public class AccountService {
 		return (List<User>) userDao.findAll();
 	}
 
-	public User getUser(Long id) {
+	public User getUser(String id) {
 		return userDao.findOne(id);
 	}
 
@@ -68,7 +69,7 @@ public class AccountService {
 	}
 
 	@Transactional(readOnly = false)
-	public void deleteUser(Long id) {
+	public void deleteUser(String id) {
 		if (isSupervisor(id)) {
 			logger.warn("操作员{}尝试删除超级管理员用户", getCurrentUserName());
 			throw new ServiceException("不能删除超级管理员用户");
@@ -81,8 +82,8 @@ public class AccountService {
 	/**
 	 * 判断是否超级管理员.
 	 */
-	private boolean isSupervisor(Long id) {
-		return id == 1;
+	private boolean isSupervisor(String id) {
+		return id == "1";
 	}
 
 	/**

@@ -55,7 +55,7 @@ public class TaskController {
 	public String list(@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
 			@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		Long userId = getCurrentUserId();
+		String userId = getCurrentUserId();
 
 		Page<Task> tasks = taskService.getUserTask(userId, searchParams, pageNumber, PAGE_SIZE, sortType);
 
@@ -86,7 +86,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") Long id, Model model) {
+	public String updateForm(@PathVariable("id") String id, Model model) {
 		model.addAttribute("task", taskService.getTask(id));
 		model.addAttribute("action", "update");
 		return "task/taskForm";
@@ -100,7 +100,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "delete/{id}")
-	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+	public String delete(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
 		taskService.deleteTask(id);
 		redirectAttributes.addFlashAttribute("message", "删除任务成功");
 		return "redirect:/task/";
@@ -111,7 +111,7 @@ public class TaskController {
 	 * 因为仅update()方法的form中有id属性，因此本方法在该方法中执行.
 	 */
 	@ModelAttribute("preloadTask")
-	public Task getTask(@RequestParam(value = "id", required = false) Long id) {
+	public Task getTask(@RequestParam(value = "id", required = false) String id) {
 		if (id != null) {
 			return taskService.getTask(id);
 		}
@@ -121,8 +121,8 @@ public class TaskController {
 	/**
 	 * 取出Shiro中的当前用户Id.
 	 */
-	private Long getCurrentUserId() {
+	private String getCurrentUserId() {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id;
+		return user.id.toString();
 	}
 }
