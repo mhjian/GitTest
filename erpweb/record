@@ -1,2 +1,6 @@
-#version
+#version1
 #version2
+1、Hibernate 3.6开始，如果有model的主键有uuid生成，会在启动时出现如下警告：
+	Using org.hibernate.id.UUIDHexGenerator which does not generate IETF RFC 4122 compliant UUID values;
+	consider using org.hibernate.id.UUIDGenerator instead
+	将主键生成策略有UUID改为UUID2
