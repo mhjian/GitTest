@@ -1,0 +1,32 @@
+JPA提供的四种标准用法为TABLE,SEQUENCE,IDENTITY,AUTO. 
+TABLE：使用一个特定的数据库表格来保存主键。 
+SEQUENCE：根据底层数据库的序列来生成主键，条件是数据库支持序列。 
+IDENTITY：主键由数据库自动生成（主要是自动增长型） 
+AUTO：主键由程序控制。 
+
+1、TABLE 
+Java代码  收藏代码
+@Id  
+@GeneratedValue(strategy = GenerationType.TABLE, generator="payablemoney_gen")  
+@TableGenerator(name = "pk_gen",  
+    table="tb_generator",  
+    pkColumnName="gen_name",  
+    valueColumnName="gen_value",  
+    pkColumnValue="PAYABLEMOENY_PK",  
+    allocationSize=1  
+)  
+
+
+这里应用表tb_generator，定义为 
+Sql代码  收藏代码
+CREATE TABLE  tb_generator (  
+  id NUMBER NOT NULL,  
+  gen_name VARCHAR2(255) NOT NULL,  
+  gen_value NUMBER NOT NULL,  
+  PRIMARY KEY(id)  
+)  
+
+
+插入纪录，供生成主键使用， 
+Sql代码  收藏代码
+INSERT INTO tb_generator(id, gen_name, gen_value) VALUES (1,PAYABLEMOENY_PK', 1); 
