@@ -57,7 +57,7 @@
 	<!-- production环境 -->
  	<beans profile="production">
  		<context:property-placeholder ignore-unresolvable="true"
-			location="classpath*:/application.properties" />	
+			location="classpath*:/data-source.properties" />	
 		
 		<!-- 数据源配置, 使用DBCP数据库连接池 -->
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -83,7 +83,7 @@
 	<!-- local development环境 -->
 	<beans profile="development">
 		<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
+			location="classpath*:/data-source.properties,
           			  classpath*:/application.development.properties" />	
 
 		<!-- DBCP连接池 -->
@@ -99,7 +99,7 @@
 	<!-- functional test 环境 -->
 	<beans profile="functional">
 		<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
+			location="classpath*:/data-source.properties,
           			  classpath*:/application.functional.properties,
           			  classpath*:/application.functional-local.properties" />	
 
@@ -121,7 +121,7 @@
 	<!-- unit test环境 -->
 	<beans profile="test">
 	 	<context:property-placeholder ignore-resource-not-found="true"
-			location="classpath*:/application.properties,
+			location="classpath*:/data-source.properties,
           			  classpath*:/application.test.properties" />	
 		
 		<!-- Simple连接池 -->
