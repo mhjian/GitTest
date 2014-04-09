@@ -3,6 +3,7 @@ package com.hejian.men.web.task;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.shiro.SecurityUtils;
@@ -33,6 +34,8 @@ import com.google.common.collect.Maps;
  * Update page   : GET /task/update/{id}
  * Update action : POST /task/update
  * Delete action : GET /task/delete/{id}
+ * 可以通过redirect/forward:url方式转到另一个Action进行连续的处理。
+ *可以通过 redirect:url 防止表单重复提交 
  * 
  * @author calvin
  */
@@ -53,9 +56,9 @@ public class TaskController {
 
 	@RequestMapping(value = "")
 	public String list(@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
-			@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request) {
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request,HttpSession session) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		String userId = getCurrentUserId();
+		String userId = getCurrentUserId(session);
 
 		Page<Task> tasks = taskService.getUserTask(userId, searchParams, pageNumber, PAGE_SIZE, sortType);
 
@@ -76,13 +79,13 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid Task newTask, RedirectAttributes redirectAttributes) {
-		User user = new User(getCurrentUserId());
+	public String create(@Valid Task newTask, RedirectAttributes redirectAttributes,HttpSession session) {
+		User user = new User(getCurrentUserId(session));
 		newTask.setUser(user);
 
 		taskService.saveTask(newTask);
 		redirectAttributes.addFlashAttribute("message", "创建任务成功");
-		return "redirect:/task/";
+		return "redirect:/task/";//重定向，防止表单重复提交
 	}
 
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
@@ -96,14 +99,14 @@ public class TaskController {
 	public String update(@Valid @ModelAttribute("preloadTask") Task task, RedirectAttributes redirectAttributes) {
 		taskService.saveTask(task);
 		redirectAttributes.addFlashAttribute("message", "更新任务成功");
-		return "redirect:/task/";
+		return "redirect:/task/";//重定向，防止表单重复提交
 	}
 
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
 		taskService.deleteTask(id);
 		redirectAttributes.addFlashAttribute("message", "删除任务成功");
-		return "redirect:/task/";
+		return "redirect:/task/";//重定向，防止表单重复提交
 	}
 
 	/**
@@ -121,8 +124,9 @@ public class TaskController {
 	/**
 	 * 取出Shiro中的当前用户Id.
 	 */
-	private String getCurrentUserId() {
-		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
-		return user.id.toString();
+	private String getCurrentUserId(HttpSession session) {
+		/*ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();*/
+		return session.getAttribute("userId").toString();
+		/*return user.id.toString();*/
 	}
 }
