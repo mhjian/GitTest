@@ -27,6 +27,9 @@ import com.hejian.men.service.account.AccountService;
 @RequestMapping(value = "/login")
 public class LoginController {
 	
+	@Autowired  
+	private HttpSession session;  
+	
 	protected AccountService accountService;
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -49,7 +52,7 @@ public class LoginController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String validLogin(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, 
 							 @RequestParam(FormAuthenticationFilter.DEFAULT_PASSWORD_PARAM) String password,
-							 Model model,HttpSession session) {
+							 Model model) {
 		User user = accountService.findUserByLoginName(userName);
 		if (user != null) {
 
@@ -61,7 +64,7 @@ public class LoginController {
             
             byte[] pwdB =  Encodes.decodeHex(user.getPassword());//数据库中获取摘要
            	String passwd = new String(pwdB);
-           	
+           	session = HttpRequestSessionUtils.getHttpSesson();
            	if(loginPwd.equals(passwd)){
            		session.setAttribute("userId", user.getId());
     			return "redirect:/task/";

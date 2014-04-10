@@ -28,7 +28,7 @@ public class ProfileController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String updateForm(Model model) {
-		String id = getCurrentUserId();
+		String id = HttpRequestSessionUtils.getCurrentUserId();
 		model.addAttribute("user", accountService.getUser(id));
 		return "account/profile";
 	}
@@ -36,7 +36,7 @@ public class ProfileController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String update(@Valid @ModelAttribute("preloadUser") User user) {
 		accountService.updateUser(user);
-		updateCurrentUserName(user.getName());
+		/*updateCurrentUserName(user.getName());*/
 		return "redirect:/";
 	}
 
@@ -50,17 +50,17 @@ public class ProfileController {
 
 	/**
 	 * 取出Shiro中的当前用户Id.
-	 */
+	 *//*
 	private String getCurrentUserId() {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		return user.id.toString();
-	}
+	}*/
 
 	/**
 	 * 更新Shiro中当前用户的用户名.
-	 */
+	 *//*
 	private void updateCurrentUserName(String userName) {
 		ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
 		user.name = userName;
-	}
+	}*/
 }

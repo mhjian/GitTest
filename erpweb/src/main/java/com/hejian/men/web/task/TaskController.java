@@ -3,10 +3,8 @@ package com.hejian.men.web.task;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.hejian.men.entity.Task;
-import com.hejian.men.entity.User;
-import com.hejian.men.service.account.ShiroDbRealm.ShiroUser;
-import com.hejian.men.service.task.TaskService;
 import org.springside.modules.web.Servlets;
 
 import com.google.common.collect.Maps;
+import com.hejian.men.entity.Task;
+import com.hejian.men.entity.User;
+import com.hejian.men.service.task.TaskService;
+import com.hejian.men.web.account.HttpRequestSessionUtils;
 
 /**
  * Task管理的Controller, 使用Restful风格的Urls:
@@ -56,9 +54,9 @@ public class TaskController {
 
 	@RequestMapping(value = "")
 	public String list(@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
-			@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request,HttpSession session) {
+			@RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request) {
 		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
-		String userId = getCurrentUserId(session);
+		String userId = HttpRequestSessionUtils.getCurrentUserId();
 
 		Page<Task> tasks = taskService.getUserTask(userId, searchParams, pageNumber, PAGE_SIZE, sortType);
 
@@ -79,8 +77,8 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid Task newTask, RedirectAttributes redirectAttributes,HttpSession session) {
-		User user = new User(getCurrentUserId(session));
+	public String create(@Valid Task newTask, RedirectAttributes redirectAttributes) {
+		User user = new User(HttpRequestSessionUtils.getCurrentUserId());
 		newTask.setUser(user);
 
 		taskService.saveTask(newTask);
@@ -119,14 +117,5 @@ public class TaskController {
 			return taskService.getTask(id);
 		}
 		return null;
-	}
-
-	/**
-	 * 取出Shiro中的当前用户Id.
-	 */
-	private String getCurrentUserId(HttpSession session) {
-		/*ShiroUser user = (ShiroUser) SecurityUtils.getSubject().getPrincipal();*/
-		return session.getAttribute("userId").toString();
-		/*return user.id.toString();*/
 	}
 }
