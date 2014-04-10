@@ -67,9 +67,6 @@ public class LoginController {
            	}else{
            		return "account/login";
            	}
-			
-			/*return new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName()),
-					user.getPassword(), ByteSource.Util.bytes(salt), getName());*/
 		} else {
 			return null;
 		}
