@@ -30,6 +30,14 @@ public class UserAdminController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
+		try{
+			if("".equals(HttpRequestSessionUtils.getCurrentUserId())){
+				return "account/login";
+			}
+		}catch(Exception e){
+			return "account/login";
+		}
+		
 		List<User> users = accountService.getAllUser();
 		model.addAttribute("users", users);
 

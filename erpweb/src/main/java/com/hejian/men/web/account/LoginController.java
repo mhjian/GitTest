@@ -34,6 +34,11 @@ public class LoginController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String login() {
+		try{
+			HttpRequestSessionUtils.clearSession();
+		}catch(Exception e){
+			
+		}
 		return "account/login";
 	}
 

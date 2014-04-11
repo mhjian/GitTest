@@ -76,6 +76,7 @@
 	<servlet>
 		<servlet-name>springServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- init-para 不配置，会加载默认的 web-inf/springServlet-servlet.xml 文件 -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring-mvc.xml</param-value>

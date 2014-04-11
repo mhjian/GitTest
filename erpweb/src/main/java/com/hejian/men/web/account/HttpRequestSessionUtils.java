@@ -27,7 +27,7 @@ public class HttpRequestSessionUtils {
 	 * 当前登录用户Id.
 	 */
 	public  static void clearSession() {
-		getHttpSesson().removeAttribute(getCurrentUserId());
+		getHttpSesson(). removeAttribute("userId");
 	}
 	
 }

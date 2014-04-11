@@ -6,21 +6,22 @@
 	<div id="title">
 	    <h1>QuickStart示例<small>--TodoList应用演示</small>
 	    <!-- <shiro:user> -->
+	     <c:if test="${userId != null }">
 			<div class="btn-group pull-right">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 					<i class="icon-user"></i> <!-- <shiro:principal property="name"/> -->
 					<span class="caret"></span>
 				</a>
-			
 				<ul class="dropdown-menu">
 					<!-- <shiro:hasRole name="admin"> -->
-						<li><a href="${ctx}/admin/user">Admin Users</a></li>
-						<li class="divider"></li>
-					<!-- </shiro:hasRole> -->
-					<li><a href="${ctx}/profile">Edit Profile</a></li>
-					<li><a href="${ctx}/logout">Logout</a></li>
+						    <li><a href="${ctx}/admin/user">Admin Users</a></li>
+							<li class="divider"></li>
+							<!-- </shiro:hasRole> -->
+							<li><a href="${ctx}/profile">Edit Profile</a></li>
+							<li><a href="${ctx}/logout">Logout</a></li>
 				</ul>
 			</div>
+			 </c:if>
 		<!-- </shiro:user> -->
 		</h1>
 	</div>
